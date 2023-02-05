@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Alien News</string>
+    <string name="channel_name">Test channel</string>
+    <string name="latest_update">Updated: 12.12.2081</string>
+</resources>
