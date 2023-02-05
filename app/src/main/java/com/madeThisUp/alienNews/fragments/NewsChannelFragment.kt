@@ -1,29 +1,48 @@
 package com.madeThisUp.alienNews.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.madeThisUp.alienNews.databinding.FragmentNewsChannelBinding
 import com.madeThisUp.alienNews.databinding.NewsChannelHolderBinding
+import java.text.DateFormat
+import java.time.Instant
 import java.util.Date
 
+
+fun Date.toYearMonthDayFormat(): String = DateFormat.getDateInstance().format(this)
 
 data class NewsChannel(
     val name: String,
     val lastUpdate: Date,
-    val brakingNews: Boolean // TODO use alarm icon
+    val brakingNews: Boolean
 )
 
 class NewsChannelHolder(
-    val binding: NewsChannelHolderBinding
-) : RecyclerView.ViewHolder(binding.root)
+    private val binding: NewsChannelHolderBinding
+) : RecyclerView.ViewHolder(binding.root) {
+    fun updateChannelInformation(channel: NewsChannel) {
+        binding.apply {
+            newsChannelName.text = channel.name
+            newsChannelLatestUpdate.text = channel.lastUpdate.toYearMonthDayFormat()
+            newChannelBrakingNews.visibility = if (channel.brakingNews) View.VISIBLE else View.GONE
+        }
+    }
+
+    fun setOnClickListener(onClickChannel: (channelName: String) -> Unit) {
+        binding.root.setOnClickListener { onClickChannel(binding.newsChannelName.text.toString()) } // TODO investigate why the click sounds two times but not repeated clicks is logged
+    }
+}
 
 class NewsChannelListAdapter(
-    private val newsChannels: List<NewsChannel>
+    private val newsChannels: List<NewsChannel>,
+    private val onClickChannel: (channelName: String) -> Unit,
 ) : RecyclerView.Adapter<NewsChannelHolder>() {
     // MEMO adapter responsibilities -> Creating necessary viewHolders and binding data to them
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsChannelHolder {
@@ -33,10 +52,9 @@ class NewsChannelListAdapter(
     }
 
     override fun onBindViewHolder(holder: NewsChannelHolder, position: Int) {
-        val channel = newsChannels[position]
         holder.apply {
-            binding.newsChannelHolderChannel.text = channel.name
-            binding.newsChannelLatestUpdate.text = channel.lastUpdate.toString()
+            updateChannelInformation(newsChannels[position])
+            setOnClickListener(onClickChannel)
         }
     }
 
@@ -67,18 +85,31 @@ class NewsChannelFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentNewsChannelBinding.inflate(layoutInflater, container, false)
         binding.NewsChannelRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.NewsChannelRecyclerView.adapter = NewsChannelListAdapter(listOf(
+        // TODO replace from database
+        val mockChannels = listOf(
             NewsChannel(
                 "test1",
+                Date(),
+                true
+            ),
+            NewsChannel(
+                "test2",
+                Date.from(Instant.now().minusMillis(5000000000L)),
+                false
+            ),
+            NewsChannel(
+                "test3",
                 Date(),
                 false
             ),
             NewsChannel(
-                "test2",
+                "test4",
                 Date(),
                 false
             )
-        ))
+        )
+        binding.NewsChannelRecyclerView.adapter = NewsChannelListAdapter(mockChannels
+        ) { Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show() } // TODO NOT IMPLEMENTED
         return binding.root
     }
 
