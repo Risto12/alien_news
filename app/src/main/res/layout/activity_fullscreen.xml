@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/fullscreenBackgroundColor"
     android:theme="@style/ThemeOverlay.AlienNews.FullscreenContainer"
-    tools:context=".FullscreenActivity"
+    tools:context=".MainActivity"
     >
     <LinearLayout
         android:id="@+id/fullScreenContent"

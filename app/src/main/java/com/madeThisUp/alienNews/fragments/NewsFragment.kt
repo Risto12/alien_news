@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.madeThisUp.alienNews.R
 import com.madeThisUp.alienNews.databinding.FragmentNewsBinding
@@ -20,6 +21,7 @@ class NewsFragment : Fragment() {
             "Cannot access binding"
         }
 
+    private val args: NewsFragmentArgs by navArgs()
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -35,6 +37,11 @@ class NewsFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentNewsBinding.inflate(layoutInflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        args.newsChannel
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
