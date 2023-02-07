@@ -6,8 +6,6 @@
     android:background="?attr/fullscreenBackgroundColor"
     android:theme="@style/ThemeOverlay.AlienNews.FullscreenContainer"
     tools:context=".FullscreenActivity">
-
-
     <LinearLayout
         android:id="@+id/fullScreenContent"
         android:layout_width="match_parent"
@@ -19,16 +17,7 @@
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentSmallTopContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             tools:layout="@layout/fragment_news_channel" />
-            />
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentBigBottomContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            tools:layout="@layout/fragment_news" />
-        />
     </LinearLayout>
 </FrameLayout>

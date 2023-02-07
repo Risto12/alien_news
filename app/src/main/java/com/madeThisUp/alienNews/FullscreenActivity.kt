@@ -10,8 +10,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowInsets
 import android.widget.LinearLayout
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModel
 import com.madeThisUp.alienNews.databinding.ActivityFullscreenBinding
 import com.madeThisUp.alienNews.fragments.NewsChannelFragment
+
+class A: ViewModel()
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -85,7 +89,7 @@ class FullscreenActivity : AppCompatActivity() {
         fullscreenContent = binding.fullScreenContent
         fullscreenContent.setOnClickListener { toggle() }
 
-        val fragment = NewsChannelFragment.newInstance()
+        val fragment = NewsChannelFragment()
         supportFragmentManager
             .beginTransaction()
             .add(R.id.fragmentSmallTopContainer, fragment)

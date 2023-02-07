@@ -7,10 +7,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.madeThisUp.alienNews.adapters.CONNECTION_ISSUE
+import com.madeThisUp.alienNews.adapters.NewsChannelListAdapter
 import com.madeThisUp.alienNews.databinding.FragmentNewsChannelBinding
 import com.madeThisUp.alienNews.databinding.NewsChannelHolderBinding
+import com.madeThisUp.alienNews.holders.NewsChannelHolder
+import com.madeThisUp.alienNews.models.NewsChannel
+import com.madeThisUp.alienNews.models.NewsChannelInfo
+import com.madeThisUp.alienNews.newsApi.NewsApi
+import com.madeThisUp.alienNews.newsApi.NewsMockApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.DateFormat
 import java.time.Instant
 import java.util.Date
@@ -18,50 +35,44 @@ import java.util.Date
 
 fun Date.toYearMonthDayFormat(): String = DateFormat.getDateInstance().format(this)
 
-data class NewsChannel(
-    val name: String,
-    val lastUpdate: Date,
-    val brakingNews: Boolean
-)
+class NewsChannelsViewModel(
+    newsApi: NewsApi
+) : ViewModel() {
 
-class NewsChannelHolder(
-    private val binding: NewsChannelHolderBinding
-) : RecyclerView.ViewHolder(binding.root) {
-    fun updateChannelInformation(channel: NewsChannel) {
-        binding.apply {
-            newsChannelName.text = channel.name
-            newsChannelLatestUpdate.text = channel.lastUpdate.toYearMonthDayFormat()
-            newChannelBrakingNews.visibility = if (channel.brakingNews) View.VISIBLE else View.GONE
+    private val _newsChannels: MutableStateFlow<List<NewsChannel>> = MutableStateFlow(listOf())
+    val newsChannel: StateFlow<List<NewsChannel>>
+        get() = _newsChannels.asStateFlow()
+
+    init {
+        viewModelScope.launch { // TODO use debugging tool to see this coroutines lifecycle
+            withContext(Dispatchers.IO) {
+                while (true) {
+                    newsApi.fetchNewsChannels().let { newChannels ->
+                        _newsChannels.update { newChannels }
+                    }
+                    delay(5000)
+                }
+            }
         }
     }
 
-    fun setOnClickListener(onClickChannel: (channelName: String) -> Unit) {
-        binding.root.setOnClickListener { onClickChannel(binding.newsChannelName.text.toString()) } // TODO investigate why the click sounds two times but not repeated clicks is logged
-    }
-}
-
-class NewsChannelListAdapter(
-    private val newsChannels: List<NewsChannel>,
-    private val onClickChannel: (channelName: String) -> Unit,
-) : RecyclerView.Adapter<NewsChannelHolder>() {
-    // MEMO adapter responsibilities -> Creating necessary viewHolders and binding data to them
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsChannelHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = NewsChannelHolderBinding.inflate(inflater, parent, false)
-        return NewsChannelHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: NewsChannelHolder, position: Int) {
-        holder.apply {
-            updateChannelInformation(newsChannels[position])
-            setOnClickListener(onClickChannel)
+    companion object {
+        class NewsChannelsViewModelFactory(
+            private val newsApi: NewsApi
+        ) : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return NewsChannelsViewModel(newsApi = newsApi) as T
+            }
         }
     }
 
-    override fun getItemCount(): Int = newsChannels.size
 }
 
 class NewsChannelFragment : Fragment() {
+    private val newsChannelViewModel: NewsChannelsViewModel by viewModels {
+        NewsChannelsViewModel.Companion.NewsChannelsViewModelFactory(NewsMockApi())
+    }
+
     private var _binding: FragmentNewsChannelBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
@@ -85,46 +96,18 @@ class NewsChannelFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentNewsChannelBinding.inflate(layoutInflater, container, false)
         binding.NewsChannelRecyclerView.layoutManager = LinearLayoutManager(context)
-        // TODO replace from database
-        val mockChannels = listOf(
-            NewsChannel(
-                "test1",
-                Date(),
-                true
-            ),
-            NewsChannel(
-                "test2",
-                Date.from(Instant.now().minusMillis(5000000000L)),
-                false
-            ),
-            NewsChannel(
-                "test3",
-                Date(),
-                false
-            ),
-            NewsChannel(
-                "test4",
-                Date(),
-                false
-            )
-        )
-        binding.NewsChannelRecyclerView.adapter = NewsChannelListAdapter(mockChannels
-        ) { Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show() } // TODO NOT IMPLEMENTED
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment NewsChannelFragment.
-         */
-        @JvmStatic
-        fun newInstance() = NewsChannelFragment()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+                newsChannelViewModel.newsChannel.collect { newsChannels ->
+                    binding.NewsChannelRecyclerView.adapter = NewsChannelListAdapter(newsChannels
+                    ) { Toast.makeText(requireContext(), "test", Toast.LENGTH_LONG).show() }
+                }
+            }
+        }
     }
 }
