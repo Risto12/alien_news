@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/navigation_graph">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigationGraph"
+    app:startDestination="@id/newsChannelFragment">
+    <fragment
+        android:id="@+id/newsChannelFragment"
+        android:name="com.madeThisUp.alienNews.fragments.NewsChannelFragment"
+        android:label="fragment_news_channel"
+        tools:layout="@layout/fragment_news_channel"
+        >
+        <action
+            android:id="@+id/action_newsChannelFragment_to_newsFragment"
+            app:destination="@id/newsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="com.madeThisUp.alienNews.fragments.NewsFragment"
+        android:label="fragment_news"
+        tools:layout="@layout/fragment_news" >
+        <argument
+            android:name="newsChannel"
+            app:argType="string" />
+    </fragment>
 </navigation>

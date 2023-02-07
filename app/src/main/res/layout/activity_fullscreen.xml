@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/fullscreenBackgroundColor"
     android:theme="@style/ThemeOverlay.AlienNews.FullscreenContainer"
-    tools:context=".FullscreenActivity">
+    tools:context=".FullscreenActivity"
+    >
     <LinearLayout
         android:id="@+id/fullScreenContent"
         android:layout_width="match_parent"
@@ -15,9 +17,12 @@
         android:background="@color/white"
         >
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentSmallTopContainer"
+            android:id="@+id/fullScreenFragmentContainer"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/navigation_graph"
             tools:layout="@layout/fragment_news_channel" />
     </LinearLayout>
 </FrameLayout>

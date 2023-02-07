@@ -10,7 +10,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowInsets
 import android.widget.LinearLayout
-import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
 import com.madeThisUp.alienNews.databinding.ActivityFullscreenBinding
 import com.madeThisUp.alienNews.fragments.NewsChannelFragment
@@ -88,15 +87,21 @@ class FullscreenActivity : AppCompatActivity() {
         // Set up the user interaction to manually show or hide the system UI.
         fullscreenContent = binding.fullScreenContent
         fullscreenContent.setOnClickListener { toggle() }
-
-        val fragment = NewsChannelFragment()
-        supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fragmentSmallTopContainer, fragment)
-            .commit()
-
+        /*
+        if (savedInstanceState == null) { // otherwise duplicate fragments would be created
+            // Code below was deprecated because nav controller handles creating the fragment
+            // because its set up as start destination. If this code would have been here
+            // it the previous fragment could have been seen under the new one
+            supportFragmentManager
+                .beginTransaction()
+                .add( // TODO this
+                    R.id.fullScreenFragmentContainer,
+                    NewsChannelFragment(),
+                    NewsChannelFragment::class.java.canonicalName as String // preventing rare case of name colliding
+                ).commit()
+        }
+        */
         //fullscreenContentControls = binding.fullscreenContentControls
-
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
