@@ -3,4 +3,9 @@
     <string name="channel_name">REMOVE</string>
     <string name="latest_update">REMOVE</string>
     <string name="connection_issue">Connection issue</string>
+    <string name="server_url">Alien satellite address</string>
+    <string name="pin">4 symbol password</string>
+    <string name="connect">Connect</string>
+    <string name="cancel">Cancel</string>
+    <string name="contacts">Contacts</string>
 </resources>

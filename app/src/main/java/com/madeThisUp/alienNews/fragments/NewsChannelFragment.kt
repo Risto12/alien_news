@@ -2,10 +2,11 @@ package com.madeThisUp.alienNews.fragments
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,8 @@ import com.madeThisUp.alienNews.R
 import com.madeThisUp.alienNews.adapters.NewsChannelListAdapter
 import com.madeThisUp.alienNews.databinding.FragmentNewsChannelBinding
 import com.madeThisUp.alienNews.models.NewsChannelsViewModel
+import com.madeThisUp.alienNews.newsApi.ApiConnection
+import com.madeThisUp.alienNews.newsApi.ConnectionStatus
 import com.madeThisUp.alienNews.newsApi.NewsMockApi
 import kotlinx.coroutines.launch
 import java.text.DateFormat
@@ -34,8 +37,44 @@ class NewsChannelFragment : Fragment() {
             "Cannot access binding"
         }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.connection_menu, menu)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.connection_settings) return true // The top menu item that is used as the icon "holder" was clicked
+
+        when(item.itemId) {
+            R.id.connection_disconnect -> run {
+                ApiConnection.disconnect()
+                invalidateOptionsMenu(activity)
+            }
+            R.id.connection_connect -> run {
+                findNavController().navigate(
+                    NewsChannelFragmentDirections
+                        .actionNewsChannelFragmentToConnectFragment())
+            }
+            else ->
+                Toast.makeText(requireContext(), "Unknown item clicked", Toast.LENGTH_LONG).show()
+        }
+
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        val iconId = when (ApiConnection.connectionStatus) {
+            ConnectionStatus.CONNECTED -> R.drawable.ic_connection
+            ConnectionStatus.ERROR -> R.drawable.ic_no_connection
+            ConnectionStatus.DISCONNECT -> R.drawable.ic_no_settings
+        }
+        menu.getItem(0).icon = AppCompatResources.getDrawable(requireContext(), iconId)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onDestroyView() {

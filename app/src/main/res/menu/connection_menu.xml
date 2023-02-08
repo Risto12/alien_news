@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
     <item
         android:id="@+id/connection_settings"
         android:title="connection settings"
-        android:icon="@drawable/ic_no_connection"
+        android:icon="@drawable/ic_no_settings"
         app:showAsAction="always"
-        />
+        >
+        <menu>
+            <item
+                android:id="@+id/connection_connect"
+                android:title="Connect"
+                />
+            <item
+                android:id="@+id/connection_disconnect"
+                android:title="Disconnect"
+                />
+        </menu>
+    </item>
 </menu>
