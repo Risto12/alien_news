@@ -30,7 +30,6 @@ class NewsChannelFragment : Fragment() {
     private val newsChannelViewModel: NewsChannelsViewModel by viewModels {
         NewsChannelsViewModel.Companion.NewsChannelsViewModelFactory(NewsMockApi())
     }
-
     private var _binding: FragmentNewsChannelBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
