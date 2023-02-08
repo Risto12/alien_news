@@ -26,5 +26,10 @@
             </intent-filter>
         </activity>
     </application>
-
+    <queries>
+        <intent> <!-- This is needed otherwise Android will correspond that no intent can will the request -->
+            <action android:name="android.intent.action.PICK"/>
+            <data android:mimeType="vnd.android.cursor.dir/contact"/>
+        </intent>
+    </queries>
 </manifest>

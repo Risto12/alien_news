@@ -10,8 +10,8 @@
         android:background="#4BE84B"
         android:contentDescription="@string/app_name" />
     <EditText
-        android:id="@+id/url"
-        android:inputType="text"
+        android:id="@+id/alienUrl"
+        android:inputType="textUri"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

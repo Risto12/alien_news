@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Muukalais uutiset</string>
+    <string name="connection_issue">Yhteys ongelma</string>
+    <string name="server_url">Muukalaisten palvelimen osoite</string>
+    <string name="pin">4 numeroinen salasana</string>
+    <string name="connect">Yhdistä</string>
+    <string name="cancel">Peruuta</string>
+    <string name="contacts">Yhteystiedot</string>
+    <string name="connection_settings">Yhteysasetukset</string>
+    <string name="connect_server">Yhdistä</string>
+    <string name="disconnect">Lopeta yhteys</string>
+</resources>

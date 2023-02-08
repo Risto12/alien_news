@@ -42,7 +42,7 @@ class ConnectFragment : DialogFragment() {
                 .layoutInflater
                 .inflate(R.layout.connection_settings_dialog, null)
 
-            txtApiUrl = inflater.findViewById(R.id.url)
+            txtApiUrl = inflater.findViewById(R.id.alienUrl)
             txtPassword = inflater.findViewById(R.id.password)
 
             builder.setView(inflater)
