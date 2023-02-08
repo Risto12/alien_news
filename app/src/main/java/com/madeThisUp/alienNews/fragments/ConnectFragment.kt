@@ -2,6 +2,9 @@ package com.madeThisUp.alienNews.fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.widget.EditText
@@ -25,10 +28,20 @@ class ConnectFragment : DialogFragment() {
                     if (cursor.moveToFirst()) {
                         val contact = cursor.getString(0)
                         txtApiUrl?.setText(contact)
+                        // TODO password from phone number
                     }
                 }
             }
         }
+    }
+
+    private fun systemHasFeature(intent: Intent): Boolean {
+        val packageManager: PackageManager = requireActivity().packageManager
+        val resolvedActivity: ResolveInfo? = packageManager.resolveActivity(
+            intent,
+            PackageManager.MATCH_DEFAULT_ONLY, // restrict search to default category
+        )
+        return resolvedActivity != null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +75,13 @@ class ConnectFragment : DialogFragment() {
                 Toast.makeText(requireContext(), txtApiUrl!!.text.toString(), Toast.LENGTH_LONG).show()
             }
             getButton(Dialog.BUTTON_NEUTRAL).setOnClickListener {
-                contactsActivityResult.launch(null)
+                val contactListFeat =
+                    contactsActivityResult.contract.createIntent(requireContext(), null)
+                if(systemHasFeature(contactListFeat)) {
+                    contactsActivityResult.launch(null)
+                } else {
+                    Toast.makeText(requireContext(), "Not available functionality", Toast.LENGTH_LONG).show()
+                }
             }
 
         }
