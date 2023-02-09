@@ -1,5 +1,7 @@
 package com.madeThisUp.alienNews.fragments
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
@@ -10,28 +12,56 @@ import android.provider.ContactsContract
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker
 import androidx.fragment.app.DialogFragment
 import com.madeThisUp.alienNews.R
+import com.madeThisUp.alienNews.utility.PhonePermissionHandler.hasPermission
 
 class ConnectFragment : DialogFragment() {
 
     private var txtApiUrl: EditText? = null
     private var txtPassword: EditText? = null
+    @SuppressLint("Range") // TODO FIX
     private val contactsActivityResult = registerForActivityResult(ActivityResultContracts.PickContact()) { uri ->
         uri?.let {
             if(txtApiUrl != null) {
-                val fields = arrayOf(ContactsContract.Contacts.DISPLAY_NAME)
-                val queryResult = requireActivity().contentResolver.query(
+                var hasPhoneNumber = false
+                var personId = ""
+                val fields = arrayOf(
+                    ContactsContract.Contacts.DISPLAY_NAME,
+                    ContactsContract.Contacts.HAS_PHONE_NUMBER,
+                    ContactsContract.Contacts._ID
+                )
+                val contentResolver = requireActivity().contentResolver
+                val queryResult = contentResolver.query(
                     uri, fields, null, null
                 )
                 queryResult?.use { cursor ->
                     if (cursor.moveToFirst()) {
                         val contact = cursor.getString(0)
                         txtApiUrl?.setText(contact)
-                        // TODO password from phone number
+                        if(cursor.getString(1) == "1") {
+                            hasPhoneNumber = true
+                            personId = cursor.getString(2)
+                        }
                     }
                 }
+                if(hasPhoneNumber && txtPassword != null) {
+                    val phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ personId,null, null);
+                    phones!!.moveToFirst();
+                    val number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    txtPassword?.setText(number)
+                }
             }
+        }
+    }
+
+    private val permissionResult =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if(granted) {
+
         }
     }
 
@@ -43,6 +73,9 @@ class ConnectFragment : DialogFragment() {
         )
         return resolvedActivity != null
     }
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,8 +104,11 @@ class ConnectFragment : DialogFragment() {
         val alertDialog = dialog as AlertDialog
         alertDialog.apply {
             getButton(Dialog.BUTTON_POSITIVE).setOnClickListener {
-                // TODO verify fields
-                Toast.makeText(requireContext(), txtApiUrl!!.text.toString(), Toast.LENGTH_LONG).show()
+                if(hasPermission(requireContext())) {
+
+                } else {
+                    permissionResult.launch(Manifest.permission.READ_CONTACTS)
+                }
             }
             getButton(Dialog.BUTTON_NEUTRAL).setOnClickListener {
                 val contactListFeat =
