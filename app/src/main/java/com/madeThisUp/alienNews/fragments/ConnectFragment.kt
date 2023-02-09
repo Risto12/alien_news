@@ -1,58 +1,34 @@
 package com.madeThisUp.alienNews.fragments
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker
 import androidx.fragment.app.DialogFragment
 import com.madeThisUp.alienNews.R
 import com.madeThisUp.alienNews.utility.PhonePermissionHandler.hasPermission
+import com.madeThisUp.alienNews.utility.QueryContacts
 
 class ConnectFragment : DialogFragment() {
 
     private var txtApiUrl: EditText? = null
     private var txtPassword: EditText? = null
-    @SuppressLint("Range") // TODO FIX
+
     private val contactsActivityResult = registerForActivityResult(ActivityResultContracts.PickContact()) { uri ->
         uri?.let {
             if(txtApiUrl != null) {
-                var hasPhoneNumber = false
-                var personId = ""
-                val fields = arrayOf(
-                    ContactsContract.Contacts.DISPLAY_NAME,
-                    ContactsContract.Contacts.HAS_PHONE_NUMBER,
-                    ContactsContract.Contacts._ID
-                )
                 val contentResolver = requireActivity().contentResolver
-                val queryResult = contentResolver.query(
-                    uri, fields, null, null
-                )
-                queryResult?.use { cursor ->
-                    if (cursor.moveToFirst()) {
-                        val contact = cursor.getString(0)
-                        txtApiUrl?.setText(contact)
-                        if(cursor.getString(1) == "1") {
-                            hasPhoneNumber = true
-                            personId = cursor.getString(2)
-                        }
-                    }
-                }
-                if(hasPhoneNumber && txtPassword != null) {
-                    val phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
-                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ personId,null, null);
-                    phones!!.moveToFirst();
-                    val number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    txtPassword?.setText(number)
+                val contactInfo = QueryContacts.queryContactInfo(contentResolver, uri)
+                contactInfo.run { if(url != null) txtApiUrl?.setText(url) }
+                if(contactInfo.hasRequiredFieldsForPinQuery() && txtPassword != null) {
+                    val pin = QueryContacts.queryPinCode(contentResolver, contactInfo.contactId!!)
+                    pin?.let { txtPassword?.setText(it) }
                 }
             }
         }
