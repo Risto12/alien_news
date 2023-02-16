@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Muukalais uutiset</string>
     <string name="connection_issue">Yhteys ongelma</string>
-    <string name="server_url">Muukalaisten palvelimen osoite</string>
+    <string name="username">Muukalaisten palvelimen osoite</string>
     <string name="pin">4 numeroinen salasana</string>
     <string name="connect">Yhdistä</string>
     <string name="cancel">Peruuta</string>

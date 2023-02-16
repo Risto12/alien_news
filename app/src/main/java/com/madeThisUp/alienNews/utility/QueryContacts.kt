@@ -6,7 +6,7 @@ import android.net.Uri
 import android.provider.ContactsContract
 
 data class ContactInfo(
-    val url: String?,
+    val username: String?,
     val hasPhoneNumber: Boolean,
     val contactId: String?,
 ) {
@@ -28,7 +28,7 @@ object QueryContacts {
         queryResult?.use { cursor ->
             if (cursor.moveToFirst()) {
                 contactInfo = ContactInfo(
-                    url = cursor.getString(0),
+                    username = cursor.getString(0),
                     hasPhoneNumber = cursor.getString(1) == "1",
                     contactId = cursor.getString(2)
                 )

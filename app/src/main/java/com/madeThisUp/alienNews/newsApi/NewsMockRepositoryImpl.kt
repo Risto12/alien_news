@@ -1,12 +1,11 @@
 package com.madeThisUp.alienNews.newsApi
 
-import android.util.Log
 import com.madeThisUp.alienNews.models.NewsChannel
 import com.madeThisUp.alienNews.models.NewsChannelInfo
 import kotlinx.coroutines.delay
 import java.util.*
 
-class NewsMockApi : NewsApi {
+class NewsMockRepositoryImpl : NewsRepository {
 
     private data class ChannelAndNews(
         val newsChannel: NewsChannel,
@@ -77,6 +76,10 @@ class NewsMockApi : NewsApi {
     override suspend fun fetchNewsChannel(channel: String): List<NewsChannelInfo> {
         delay(2000)
         return getChannels().first { it.newsChannel.name == channel }.newsChannelInfo
+    }
+
+    override suspend fun fetchChannelImage(imageId: String): Any? {
+        TODO("Not yet implemented")
     }
 
 }

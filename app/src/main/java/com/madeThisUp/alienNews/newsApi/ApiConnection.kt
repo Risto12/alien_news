@@ -8,10 +8,12 @@ enum class ConnectionStatus {
 
 private data class ConnectionSettings(
     val url: String,
+    val username: String,
     val pin: String
 )
 
 object ApiConnection {
+    private var token: String? = null
     private var _connectionStatus = ConnectionStatus.DISCONNECT
     val connectionStatus: ConnectionStatus
         get() {
@@ -20,7 +22,7 @@ object ApiConnection {
 
     private var settings: ConnectionSettings? = null
 
-    suspend fun testConnectionAndSave(url: String, pin: String) {
+    suspend fun acquireToken(url: String, pin: String) {
         try {
             _connectionStatus = ConnectionStatus.ERROR
             // TODO connect to backend for testing connection

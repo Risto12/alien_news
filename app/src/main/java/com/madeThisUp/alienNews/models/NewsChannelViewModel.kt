@@ -3,7 +3,7 @@ package com.madeThisUp.alienNews.models
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.madeThisUp.alienNews.newsApi.NewsApi
+import com.madeThisUp.alienNews.newsApi.NewsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class NewsChannelsViewModel(
-    newsApi: NewsApi
+    newsRepository: NewsRepository
 ) : ViewModel() {
 
     private val _newsChannels: MutableStateFlow<List<NewsChannel>> = MutableStateFlow(listOf())
@@ -25,7 +25,7 @@ class NewsChannelsViewModel(
         viewModelScope.launch { // TODO use debugging tool to see this coroutines lifecycle
             withContext(Dispatchers.IO) {
                 while (true) {
-                    newsApi.fetchNewsChannels().let { newChannels ->
+                    newsRepository.fetchNewsChannels().let { newChannels ->
                         _newsChannels.update { newChannels }
                     }
                     delay(5000)
@@ -36,10 +36,10 @@ class NewsChannelsViewModel(
 
     companion object {
         class NewsChannelsViewModelFactory(
-            private val newsApi: NewsApi
+            private val newsRepository: NewsRepository
         ) : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return NewsChannelsViewModel(newsApi = newsApi) as T
+                return NewsChannelsViewModel(newsRepository = newsRepository) as T
             }
         }
     }

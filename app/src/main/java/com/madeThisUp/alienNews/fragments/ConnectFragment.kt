@@ -11,21 +11,24 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.madeThisUp.alienNews.R
+import com.madeThisUp.alienNews.newsApi.NewsRepositoryImpl
 import com.madeThisUp.alienNews.utility.PhonePermissionHandler.hasPermission
 import com.madeThisUp.alienNews.utility.QueryContacts
+import kotlinx.coroutines.launch
 
 class ConnectFragment : DialogFragment() {
 
-    private var txtApiUrl: EditText? = null
+    private var txtUsername: EditText? = null
     private var txtPassword: EditText? = null
 
     private val contactsActivityResult = registerForActivityResult(ActivityResultContracts.PickContact()) { uri ->
         uri?.let {
-            if(txtApiUrl != null) {
+            if(txtUsername != null) {
                 val contentResolver = requireActivity().contentResolver
                 val contactInfo = QueryContacts.queryContactInfo(contentResolver, uri)
-                contactInfo.run { if(url != null) txtApiUrl?.setText(url) }
+                contactInfo.run { if(username != null) txtUsername?.setText(username) }
                 if(contactInfo.hasRequiredFieldsForPinQuery() && txtPassword != null) {
                     val pin = QueryContacts.queryPinCode(contentResolver, contactInfo.contactId!!)
                     pin?.let { txtPassword?.setText(it) }
@@ -37,7 +40,7 @@ class ConnectFragment : DialogFragment() {
     private val permissionResult =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if(granted) {
-
+            // TODO
         }
     }
 
@@ -50,11 +53,12 @@ class ConnectFragment : DialogFragment() {
         return resolvedActivity != null
     }
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycleScope.launch {
+            val b = NewsRepositoryImpl()
+            b.fetchNewsChannels()
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -64,7 +68,7 @@ class ConnectFragment : DialogFragment() {
                 .layoutInflater
                 .inflate(R.layout.connection_settings_dialog, null)
 
-            txtApiUrl = inflater.findViewById(R.id.alienUrl)
+            txtUsername = inflater.findViewById(R.id.username)
             txtPassword = inflater.findViewById(R.id.password)
 
             builder.setView(inflater)
@@ -103,6 +107,6 @@ class ConnectFragment : DialogFragment() {
         super.onDestroyView()
         // TODO check if this is even necessary
         txtPassword = null
-        txtApiUrl = null
+        txtUsername = null
     }
 }

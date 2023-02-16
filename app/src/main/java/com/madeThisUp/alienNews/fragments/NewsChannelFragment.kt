@@ -1,7 +1,6 @@
 package com.madeThisUp.alienNews.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
@@ -17,7 +16,7 @@ import com.madeThisUp.alienNews.databinding.FragmentNewsChannelBinding
 import com.madeThisUp.alienNews.models.NewsChannelsViewModel
 import com.madeThisUp.alienNews.newsApi.ApiConnection
 import com.madeThisUp.alienNews.newsApi.ConnectionStatus
-import com.madeThisUp.alienNews.newsApi.NewsMockApi
+import com.madeThisUp.alienNews.newsApi.NewsMockRepositoryImpl
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.util.Date
@@ -28,7 +27,7 @@ fun Date.toYearMonthDayFormat(): String = DateFormat.getDateInstance().format(th
 
 class NewsChannelFragment : Fragment() {
     private val newsChannelViewModel: NewsChannelsViewModel by viewModels {
-        NewsChannelsViewModel.Companion.NewsChannelsViewModelFactory(NewsMockApi())
+        NewsChannelsViewModel.Companion.NewsChannelsViewModelFactory(NewsMockRepositoryImpl())
     }
     private var _binding: FragmentNewsChannelBinding? = null
     private val binding
