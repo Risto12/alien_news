@@ -1,9 +1,11 @@
 package com.madeThisUp.alienNews.models
 
-import java.util.*
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class NewsChannel(
     val name: String,
-    val lastUpdate: Date,
+    val header: String,
+    val latestUpdate: String,
     val brakingNews: Boolean
 )

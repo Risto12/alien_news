@@ -1,8 +1,9 @@
-package com.madeThisUp.alienNews.models
+package com.madeThisUp.alienNews.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.madeThisUp.alienNews.models.NewsChannel
 import com.madeThisUp.alienNews.newsApi.NewsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

@@ -13,21 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.madeThisUp.alienNews.R
 import com.madeThisUp.alienNews.adapters.NewsChannelListAdapter
 import com.madeThisUp.alienNews.databinding.FragmentNewsChannelBinding
-import com.madeThisUp.alienNews.models.NewsChannelsViewModel
+import com.madeThisUp.alienNews.viewModels.NewsChannelsViewModel
 import com.madeThisUp.alienNews.newsApi.ApiConnection
 import com.madeThisUp.alienNews.newsApi.ConnectionStatus
-import com.madeThisUp.alienNews.newsApi.NewsMockRepositoryImpl
+import com.madeThisUp.alienNews.newsApi.NewsRepositoryImpl
 import kotlinx.coroutines.launch
-import java.text.DateFormat
-import java.util.Date
-
-
-fun Date.toYearMonthDayFormat(): String = DateFormat.getDateInstance().format(this)
 
 
 class NewsChannelFragment : Fragment() {
     private val newsChannelViewModel: NewsChannelsViewModel by viewModels {
-        NewsChannelsViewModel.Companion.NewsChannelsViewModelFactory(NewsMockRepositoryImpl())
+        NewsChannelsViewModel.Companion.NewsChannelsViewModelFactory(NewsRepositoryImpl())
     }
     private var _binding: FragmentNewsChannelBinding? = null
     private val binding
@@ -93,7 +88,6 @@ class NewsChannelFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
                 newsChannelViewModel.newsChannel.collect { newsChannels ->
@@ -107,5 +101,4 @@ class NewsChannelFragment : Fragment() {
             }
         }
     }
-
 }

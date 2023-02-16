@@ -9,4 +9,5 @@
     <string name="connection_settings">Connection settings</string>
     <string name="connect_server">Connect to server</string>
     <string name="disconnect">Disconnect from server</string>
+    <string name="updated">Updated: %s</string>
 </resources>

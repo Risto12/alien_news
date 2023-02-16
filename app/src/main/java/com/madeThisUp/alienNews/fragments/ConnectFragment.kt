@@ -57,7 +57,7 @@ class ConnectFragment : DialogFragment() {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             val b = NewsRepositoryImpl()
-            b.fetchNewsChannels()
+            b.fetchChannelNews("endor")
         }
     }
 

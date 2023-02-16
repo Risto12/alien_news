@@ -6,29 +6,63 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/newsChannelName"
+    <LinearLayout
+        android:id="@+id/newsChannelLinearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:textAppearance="?attr/textAppearanceHeadline6"
         app:layout_constraintBottom_toTopOf="@+id/newsChannelLatestUpdate"
         app:layout_constraintEnd_toStartOf="@+id/newChannelBrakingNews"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        >
+    <TextView
+        android:id="@+id/newsChannelName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textSize="20sp"
+        tools:text="Mars"
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:text="-"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            tools:text="-" />
+        <TextView
+            android:id="@+id/newsChannelHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            tools:text="Aliens attack"
+            />
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/newsChannelLatestUpdate"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/newChannelBrakingNews"
+        app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/newsChannelName" />
+        app:layout_constraintTop_toTopOf="@+id/newsChannelLinearLayout"
+        tools:text="2/2/2028" />
 
     <ImageView
         android:id="@+id/newChannelBrakingNews"

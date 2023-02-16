@@ -1,19 +1,18 @@
 package com.madeThisUp.alienNews.newsApi
 
-import com.squareup.moshi.JsonClass
+import com.madeThisUp.alienNews.models.News
+import com.madeThisUp.alienNews.models.NewsChannel
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 const val NEWS_BASE_URL = "http://10.0.2.2:8080/" // issue with self signed certificates so falling back to http
 const val CHANNELS = "alien/news/v1/channels"
-
-@JsonClass(generateAdapter = true)
-data class NewsApiChannel(
-    val name: String,
-    val latestUpdate: String,
-    val brakingNews: Boolean
-)
+const val CHANNEL = "alien/news/v1/channel/{name}"
 
 interface NewsApi {
     @GET(CHANNELS)
-    suspend fun fetchChannels(): List<NewsApiChannel>
+    suspend fun fetchChannels(): List<NewsChannel>
+
+    @GET(CHANNEL)
+    suspend fun fetchChannel(@Path("name") name: String): List<News>
 }

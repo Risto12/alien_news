@@ -1,7 +1,8 @@
 package com.madeThisUp.alienNews.newsApi
 
+import com.madeThisUp.alienNews.models.Content
+import com.madeThisUp.alienNews.models.News
 import com.madeThisUp.alienNews.models.NewsChannel
-import com.madeThisUp.alienNews.models.NewsChannelInfo
 import kotlinx.coroutines.delay
 import java.util.*
 
@@ -9,7 +10,7 @@ class NewsMockRepositoryImpl : NewsRepository {
 
     private data class ChannelAndNews(
         val newsChannel: NewsChannel,
-        val newsChannelInfo: List<NewsChannelInfo>
+        val ChannelNews: List<News>
     )
 
     private fun getChannels(): List<ChannelAndNews> {
@@ -17,55 +18,77 @@ class NewsMockRepositoryImpl : NewsRepository {
             ChannelAndNews(
                 NewsChannel(
                     name = "channel1",
-                    lastUpdate = Date(),
-                    brakingNews = false
+                    latestUpdate = Date().toString(),
+                    brakingNews = false,
+                    header = "Aliens attack"
                 ),
                 listOf(
-                    NewsChannelInfo(
-                        news = "Some text",
-                        updated = Date()
+                    News(
+                        Content(
+                            header = "text",
+                            text = "Some text",
+                            date = Date().toString(),
+                            brakingNews = true
+                        )
                     ),
-                    NewsChannelInfo(
-                        news = "Some text",
-                        updated = Date()
+                    News(
+                        Content(
+                            header = "text",
+                            text = "Some text",
+                            date = Date().toString(),
+                            brakingNews = false
+                        )
                     )
                 )
             ),
             ChannelAndNews(
                 NewsChannel(
                     name = "channel2",
-                    lastUpdate = Date(),
-                    brakingNews = false
+                    latestUpdate = Date().toString(),
+                    brakingNews = false,
+                    header = "Aliens attack"
                 ),
                 listOf(
-                    NewsChannelInfo(
-                        news = "Some text",
-                        updated = Date()
-                    ),
-                    NewsChannelInfo(
-                        news = "Some text",
-                        updated = Date()
+                    News(
+                    Content(
+                        header = "text",
+                        text = "Some text",
+                        date = Date().toString(),
+                        brakingNews = true
+                    )),
+                    News(
+                    Content(
+                        header = "text",
+                        text = "Some text",
+                        date = Date().toString(),
+                        brakingNews = true
                     )
                 )
-            ),
+            )),
             ChannelAndNews(
                 NewsChannel(
                     name = "channel3",
-                    lastUpdate = Date(),
-                    brakingNews = false
+                    latestUpdate = Date().toString(),
+                    brakingNews = false,
+                    header = "Aliens attack"
                 ),
                 listOf(
-                    NewsChannelInfo(
-                        news = "Some text",
-                        updated = Date()
-                    ),
-                    NewsChannelInfo(
-                        news = "Some text",
-                        updated = Date()
-                    )
+                    News(
+                    Content(
+                        header = "text",
+                        text = "Some text",
+                        date = Date().toString(),
+                        brakingNews = true
+                    )),
+                        News(
+                    Content(
+                        header = "text",
+                        text = "Some text",
+                        date = Date().toString(),
+                        brakingNews = true
+                    ))
                 )
-            ),
-        )
+            ))
     }
 
     override suspend fun fetchNewsChannels(): List<NewsChannel> {
@@ -73,9 +96,9 @@ class NewsMockRepositoryImpl : NewsRepository {
         return getChannels().map { it.newsChannel }
     }
 
-    override suspend fun fetchNewsChannel(channel: String): List<NewsChannelInfo> {
+    override suspend fun fetchChannelNews(channel: String): List<News> {
         delay(2000)
-        return getChannels().first { it.newsChannel.name == channel }.newsChannelInfo
+        return getChannels().first { it.newsChannel.name == channel }.ChannelNews
     }
 
     override suspend fun fetchChannelImage(imageId: String): Any? {
