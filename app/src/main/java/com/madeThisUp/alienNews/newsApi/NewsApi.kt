@@ -8,6 +8,9 @@ import retrofit2.http.Path
 const val NEWS_BASE_URL = "http://10.0.2.2:8080/" // issue with self signed certificates so falling back to http
 const val CHANNELS = "alien/news/v1/channels"
 const val CHANNEL = "alien/news/v1/channel/{name}"
+const val NEWS_IMAGE = "alien/news/v1/image/%s"
+
+fun String.imageIdToImageUrl() = NEWS_BASE_URL + NEWS_IMAGE.format(this)
 
 interface NewsApi {
     @GET(CHANNELS)

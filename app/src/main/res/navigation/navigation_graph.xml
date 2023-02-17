@@ -25,10 +25,22 @@
         <argument
             android:name="newsChannel"
             app:argType="string" />
+        <action
+            android:id="@+id/action_newsFragment_to_newsImagesFragment"
+            app:destination="@id/newsImagesFragment" />
     </fragment>
     <dialog
         android:id="@+id/connectFragment"
         android:name="com.madeThisUp.alienNews.fragments.ConnectFragment"
         android:label="fragment_connect"
         tools:layout="@layout/fragment_connect" />
+    <fragment
+        android:id="@+id/newsImagesFragment"
+        android:name="com.madeThisUp.alienNews.fragments.NewsImagesFragment"
+        android:label="fragment_news_images"
+        tools:layout="@layout/fragment_news_images" >
+        <argument
+            android:name="imageUrls"
+            app:argType="string[]" />
+    </fragment>
 </navigation>

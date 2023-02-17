@@ -101,8 +101,4 @@ class NewsMockRepositoryImpl : NewsRepository {
         return getChannels().first { it.newsChannel.name == channel }.ChannelNews
     }
 
-    override suspend fun fetchChannelImage(imageId: String): Any? {
-        TODO("Not yet implemented")
-    }
-
 }

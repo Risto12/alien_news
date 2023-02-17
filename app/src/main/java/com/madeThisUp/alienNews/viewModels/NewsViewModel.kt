@@ -1,6 +1,5 @@
 package com.madeThisUp.alienNews.viewModels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -23,7 +22,6 @@ class NewsViewModel(
     init {
         viewModelScope.launch {
             newsRepository.fetchChannelNews(channel).let { news ->
-                    Log.d("Output", news.size.toString())
                     _news.update { news.map { it.content }
                 }
             }

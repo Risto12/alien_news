@@ -1,7 +1,6 @@
 package com.madeThisUp.alienNews.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.madeThisUp.alienNews.adapters.NewsChannelListAdapter
 import com.madeThisUp.alienNews.adapters.NewsListAdapter
 import com.madeThisUp.alienNews.databinding.FragmentNewsBinding
-import com.madeThisUp.alienNews.viewModels.NewsChannelsViewModel
 import com.madeThisUp.alienNews.newsApi.NewsRepositoryImpl
 import com.madeThisUp.alienNews.viewModels.NewsViewModel
 import kotlinx.coroutines.launch
@@ -55,9 +52,13 @@ class NewsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
                 newsViewModel.news.collect { news ->
-                    binding.NewsRecyclerView.adapter = NewsListAdapter(news)
+                    binding.NewsRecyclerView.adapter = NewsListAdapter(news) {
+                        findNavController().navigate(
+                            NewsFragmentDirections.actionNewsFragmentToNewsImagesFragment(it.imageIds!!.toTypedArray())
+                        ) }
+                    }
             }
-    }}}
+    }}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

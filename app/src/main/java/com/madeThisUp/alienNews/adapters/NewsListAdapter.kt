@@ -3,38 +3,25 @@ package com.madeThisUp.alienNews.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.madeThisUp.alienNews.databinding.ChannelConnectionIssueHolderBinding
 import com.madeThisUp.alienNews.databinding.NewsTextContentHolderBinding
-import com.madeThisUp.alienNews.holders.ConnectionIssueHolder
-import com.madeThisUp.alienNews.holders.NewsHolder
+import com.madeThisUp.alienNews.holders.NewsTextContentHolder
 import com.madeThisUp.alienNews.models.Content
-
-
-const val NEWS_VIEW = 2
-const val IMAGE_VIEW = 1
 
 class NewsListAdapter(
     private val content: List<Content>,
-) : RecyclerView.Adapter<ViewHolder>() {
+    private val onClickSeeAllImages: (content: Content) -> Unit
+) : RecyclerView.Adapter<NewsTextContentHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsTextContentHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return if(viewType == NEWS_VIEW) {
-            val binding = NewsTextContentHolderBinding.inflate(inflater, parent, false)
-            NewsHolder(binding)
-        } else {
-            // TODO IMAGE VIEW HERE
-            val binding = ChannelConnectionIssueHolderBinding.inflate(inflater, parent, false)
-            ConnectionIssueHolder(binding)
-        }
+        val binding = NewsTextContentHolderBinding.inflate(inflater, parent, false)
+        return NewsTextContentHolder(binding)
     }
 
-    override fun getItemViewType(position: Int): Int = NEWS_VIEW // TODO can be image also
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        (holder as NewsHolder).apply {
+    override fun onBindViewHolder(holder: NewsTextContentHolder, position: Int) {
+        holder.apply {
             updateNewsInformation(content[position])
+            setOnSeeAllImagesClicked(content[position], onClickSeeAllImages)
         }
     }
 

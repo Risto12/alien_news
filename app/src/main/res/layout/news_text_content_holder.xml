@@ -39,4 +39,25 @@
         app:layout_constraintTop_toBottomOf="@+id/newsDate"
         android:textSize="18sp"
         tools:text="Ipsum larem"/>
+
+    <ImageView
+        android:id="@+id/newsMainImage"
+        android:layout_width="136dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="116dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/newsHeader"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/newsAllImages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/all_news_images"
+        android:textColor="#1D35D1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newsText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

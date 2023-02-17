@@ -11,4 +11,5 @@
     <string name="connect_server">Yhdistä</string>
     <string name="disconnect">Lopeta yhteys</string>
     <string name="updated">Päivitetty:</string>
+    <string name="all_news_images">Katso muut kuvat</string>
 </resources>

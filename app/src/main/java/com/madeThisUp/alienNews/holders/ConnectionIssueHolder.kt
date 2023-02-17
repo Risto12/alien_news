@@ -6,6 +6,4 @@ import com.madeThisUp.alienNews.databinding.ChannelConnectionIssueHolderBinding
 
 class ConnectionIssueHolder (
     binding: ChannelConnectionIssueHolderBinding
-) : RecyclerView.ViewHolder(binding.root) {
-    init { Log.d("CALLED", "CALLED")}
-}
+) : RecyclerView.ViewHolder(binding.root)
