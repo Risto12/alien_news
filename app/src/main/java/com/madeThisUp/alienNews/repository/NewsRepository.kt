@@ -1,4 +1,4 @@
-package com.madeThisUp.alienNews.newsApi
+package com.madeThisUp.alienNews.repository
 
 import com.madeThisUp.alienNews.models.News
 import com.madeThisUp.alienNews.models.NewsChannel

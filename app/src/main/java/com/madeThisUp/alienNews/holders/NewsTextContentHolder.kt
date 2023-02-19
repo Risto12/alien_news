@@ -7,7 +7,7 @@ import coil.load
 import com.madeThisUp.alienNews.R
 import com.madeThisUp.alienNews.databinding.NewsTextContentHolderBinding
 import com.madeThisUp.alienNews.models.Content
-import com.madeThisUp.alienNews.newsApi.NETWORK_ERROR_TAG
+import com.madeThisUp.alienNews.repository.NETWORK_ERROR_TAG
 import com.madeThisUp.alienNews.newsApi.imageIdToImageUrl
 
 class NewsTextContentHolder(private val binding: NewsTextContentHolderBinding) :

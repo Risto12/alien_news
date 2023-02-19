@@ -1,8 +1,10 @@
-package com.madeThisUp.alienNews.newsApi
+package com.madeThisUp.alienNews.repository
 
 import android.util.Log
 import com.madeThisUp.alienNews.models.News
 import com.madeThisUp.alienNews.models.NewsChannel
+import com.madeThisUp.alienNews.newsApi.NEWS_BASE_URL
+import com.madeThisUp.alienNews.newsApi.NewsApi
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 

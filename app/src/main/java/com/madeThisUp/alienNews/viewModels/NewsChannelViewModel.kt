@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.madeThisUp.alienNews.models.NewsChannel
-import com.madeThisUp.alienNews.newsApi.NewsRepository
+import com.madeThisUp.alienNews.repository.NewsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

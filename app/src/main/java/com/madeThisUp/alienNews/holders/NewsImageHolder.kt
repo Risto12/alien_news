@@ -5,9 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.madeThisUp.alienNews.R
 import com.madeThisUp.alienNews.databinding.NewsImageHolderBinding
-import com.madeThisUp.alienNews.models.ContentImage
-import com.madeThisUp.alienNews.newsApi.NETWORK_ERROR_TAG
-import com.madeThisUp.alienNews.newsApi.imageIdToImageUrl
+import com.madeThisUp.alienNews.repository.NETWORK_ERROR_TAG
 
 
 class NewsImageHolder(

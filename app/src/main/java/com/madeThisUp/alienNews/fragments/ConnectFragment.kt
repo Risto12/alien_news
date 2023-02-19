@@ -13,7 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.madeThisUp.alienNews.R
-import com.madeThisUp.alienNews.newsApi.NewsRepositoryImpl
+import com.madeThisUp.alienNews.repository.NewsRepositoryImpl
 import com.madeThisUp.alienNews.utility.PhonePermissionHandler.hasPermission
 import com.madeThisUp.alienNews.utility.QueryContacts
 import kotlinx.coroutines.launch

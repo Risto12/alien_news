@@ -16,7 +16,7 @@ import com.madeThisUp.alienNews.databinding.FragmentNewsChannelBinding
 import com.madeThisUp.alienNews.viewModels.NewsChannelsViewModel
 import com.madeThisUp.alienNews.newsApi.ApiConnection
 import com.madeThisUp.alienNews.newsApi.ConnectionStatus
-import com.madeThisUp.alienNews.newsApi.NewsRepositoryImpl
+import com.madeThisUp.alienNews.repository.NewsRepositoryImpl
 import kotlinx.coroutines.launch
 
 

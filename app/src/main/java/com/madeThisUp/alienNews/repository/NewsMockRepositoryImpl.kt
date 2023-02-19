@@ -1,4 +1,4 @@
-package com.madeThisUp.alienNews.newsApi
+package com.madeThisUp.alienNews.repository
 
 import com.madeThisUp.alienNews.models.Content
 import com.madeThisUp.alienNews.models.News
@@ -88,7 +88,8 @@ class NewsMockRepositoryImpl : NewsRepository {
                         brakingNews = true
                     ))
                 )
-            ))
+            )
+        )
     }
 
     override suspend fun fetchNewsChannels(): List<NewsChannel> {

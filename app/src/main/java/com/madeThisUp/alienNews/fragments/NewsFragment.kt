@@ -14,7 +14,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.madeThisUp.alienNews.adapters.NewsListAdapter
 import com.madeThisUp.alienNews.databinding.FragmentNewsBinding
-import com.madeThisUp.alienNews.newsApi.NewsRepositoryImpl
+import com.madeThisUp.alienNews.repository.NewsRepositoryImpl
 import com.madeThisUp.alienNews.viewModels.NewsViewModel
 import kotlinx.coroutines.launch
 
