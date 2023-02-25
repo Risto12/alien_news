@@ -41,18 +41,11 @@ class MainActivity : AppCompatActivity() {
 
         when(item.itemId) {
             R.id.connection_disconnect -> run {
-                //ConnectionStatusManager.disconnect()
-                //ActivityCompat.invalidateOptionsMenu(activity)
+                ConnectionStatusManager.setDisconnected()
                 return true
             }
             R.id.connection_connect -> run {
-                supportFragmentManager
-                    .beginTransaction()
-                    .add(
-                        R.id.fullScreenFragmentContainer,
-                        ConnectFragment(),
-                        ConnectFragment::class.java.canonicalName as String // preventing rare case of name colliding
-                    ).commit()
+                ConnectFragment().show(supportFragmentManager, "ConnectFragment")
                 return true
             }
             else -> run {

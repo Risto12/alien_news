@@ -18,4 +18,6 @@ object ConnectionStatusManager {
     fun setStatusConnected() = _connectionStatus.update { ConnectionStatus.CONNECTED }
 
     fun setError() = _connectionStatus.update { ConnectionStatus.ERROR }
+
+    fun setDisconnected() = _connectionStatus.update { ConnectionStatus.DISCONNECT }
 }

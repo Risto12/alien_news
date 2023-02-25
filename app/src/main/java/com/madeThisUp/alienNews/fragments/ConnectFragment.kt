@@ -91,9 +91,6 @@ class ConnectFragment : DialogFragment() {
         return resolvedActivity != null
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     private fun setUpCredentialsViews(view: View) {
         txtUsername = view.findViewById(R.id.username)
@@ -119,13 +116,13 @@ class ConnectFragment : DialogFragment() {
                 .setPositiveButton(R.string.connect, null)
                 .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
                 .setNeutralButton(R.string.contacts, null)
-            builder.create()
+
+            return builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
     override fun onResume() {
         super.onResume()
-        val a = dialog
         val alertDialog = dialog as AlertDialog
         alertDialog.apply {
             getButton(Dialog.BUTTON_POSITIVE).setOnClickListener {
