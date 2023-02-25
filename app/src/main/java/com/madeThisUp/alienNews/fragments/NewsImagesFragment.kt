@@ -18,7 +18,9 @@ import com.madeThisUp.alienNews.databinding.FragmentNewsImagesBinding
 import com.madeThisUp.alienNews.holders.NewsImageHolder
 import kotlinx.coroutines.launch
 
-
+/**
+ * Shows all the pictures in the chosen news
+ */
 class NewsImagesFragment : Fragment() {
     private var _binding: FragmentNewsImagesBinding? = null
     private val binding

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.madeThisUp.alienNews.data.AlienNewsCredentialsPreferences
-import com.madeThisUp.alienNews.data.AlienNewsCredentialsPreferencesSerializer
+import com.madeThisUp.alienNews.serializer.AlienNewsCredentialsPreferencesSerializer
 import kotlinx.coroutines.flow.Flow
 
 private val Context.alienCredentialsStore: DataStore<AlienNewsCredentialsPreferences> by dataStore(

@@ -7,7 +7,7 @@ import coil.load
 import com.madeThisUp.alienNews.R
 import com.madeThisUp.alienNews.databinding.NewsTextContentHolderBinding
 import com.madeThisUp.alienNews.models.Content
-import com.madeThisUp.alienNews.repository.NETWORK_ERROR_TAG
+import com.madeThisUp.alienNews.newsApi.NETWORK_ERROR_TAG
 import com.madeThisUp.alienNews.newsApi.imageIdToImageUrl
 
 class NewsTextContentHolder(private val binding: NewsTextContentHolderBinding) :
@@ -27,7 +27,7 @@ class NewsTextContentHolder(private val binding: NewsTextContentHolderBinding) :
                         placeholder(R.drawable.ic_baseline_satellite_alt_24)
                     }
                 } catch(e: Exception) {
-                    Log.d(NETWORK_ERROR_TAG, "Fetching imageUrl:$imageUrl failed", e)
+                    Log.e(NETWORK_ERROR_TAG, "Fetching imageUrl:$imageUrl failed", e)
                     newsMainImage.load(R.drawable.ic_no_connection)
                 }
                 if(newsContent.imageIds.size <= 1) newsAllImages.visibility = View.GONE

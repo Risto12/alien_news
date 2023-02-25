@@ -14,11 +14,13 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.madeThisUp.alienNews.adapters.NewsListAdapter
 import com.madeThisUp.alienNews.databinding.FragmentNewsBinding
-import com.madeThisUp.alienNews.repository.NewsRepositoryImpl
+import com.madeThisUp.alienNews.repository.TokenNewsRepositoryImpl
 import com.madeThisUp.alienNews.viewModels.NewsViewModel
 import kotlinx.coroutines.launch
 
-
+/**
+ * Shows all the news of one channel
+ */
 class NewsFragment : Fragment() {
     private var _binding: FragmentNewsBinding? = null
     private val binding
@@ -29,7 +31,7 @@ class NewsFragment : Fragment() {
     private val args: NewsFragmentArgs by navArgs()
 
     private val newsViewModel: NewsViewModel by viewModels {
-        NewsViewModel.Companion.NewsViewModelFactory(NewsRepositoryImpl(), args.newsChannel)
+        NewsViewModel.Companion.NewsViewModelFactory(TokenNewsRepositoryImpl(), args.newsChannel)
     }
 
     override fun onDestroyView() {

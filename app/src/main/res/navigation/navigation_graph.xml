@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_newsChannelFragment_to_newsFragment"
             app:destination="@id/newsFragment" />
-        <action
-            android:id="@+id/action_newsChannelFragment_to_connectFragment"
-            app:destination="@id/connectFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsFragment"
