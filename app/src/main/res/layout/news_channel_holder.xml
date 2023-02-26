@@ -8,75 +8,55 @@
     android:layout_marginTop="3dp"
     android:background="@color/recyclerViewItem">
 
-    <LinearLayout
-        android:id="@+id/newsChannelLinearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/newsChannelLatestUpdate"
-        app:layout_constraintEnd_toStartOf="@+id/newChannelBrakingNews"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed">
-
-        <TextView
-            android:id="@+id/newsChannelName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="@color/recyclerViewItemTextColor"
-            android:textSize="20sp"
-            tools:text="Mars" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:text="-"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="@color/recyclerViewItemTextColor"
-            tools:text="-" />
-
-        <TextView
-            android:id="@+id/newsChannelHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="@color/recyclerViewItemTextColor"
-            android:textSize="16sp"
-            tools:text="Aliens attack" />
-
-
-    </LinearLayout>
-
     <TextView
         android:id="@+id/newsChannelLatestUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:textColor="@color/recyclerViewItemUpdateDateColor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/newChannelBrakingNews"
-        app:layout_constraintHorizontal_bias="0.026"
+        app:layout_constraintHorizontal_bias="0.16"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/newsChannelLinearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/newsChannelHeader"
+        app:layout_constraintVertical_bias="0.0"
         tools:text="2/2/2028" />
 
     <ImageView
         android:id="@+id/newChannelBrakingNews"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.347"
         app:srcCompat="@drawable/ic_braking_news" />
+
+    <TextView
+        android:id="@+id/newsChannelHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constrainedWidth="true"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textColor="@color/recyclerViewItemTextColor"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/newChannelBrakingNews"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newsChannelName"
+        tools:text="Aliens attack" />
+
+    <TextView
+        android:id="@+id/newsChannelName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textColor="@color/recyclerViewItemTextColor"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Mars" />
 </androidx.constraintlayout.widget.ConstraintLayout>
