@@ -19,7 +19,7 @@ import com.madeThisUp.alienNews.repository.TokenNewsRepositoryImpl
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-const val CHECK_NEWS_INTERVAL_IN_MILLI_SECONDS = 1000L
+const val CHECK_NEWS_INTERVAL_IN_MILLI_SECONDS = 15000L
 
 /**
  * Shows all the news channels available

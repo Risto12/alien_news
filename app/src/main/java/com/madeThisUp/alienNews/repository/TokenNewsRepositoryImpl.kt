@@ -10,9 +10,6 @@ import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-
-// TODO there should be check to identify if this is token expired issue
-
 object TokenCache {
     @Volatile
     var TOKEN = ""
@@ -82,8 +79,7 @@ class TokenNewsRepositoryImpl(
         }
     }
 
-    override suspend fun fetchNewsChannels(): List<NewsChannel> {
-        acquireTokenIfNotSet()
+    override suspend fun fetchNewsChannels(): List<NewsChannel> { acquireTokenIfNotSet()
         return withErrorHandling {
             newsApi.fetchChannels(token = getToken())
         }
