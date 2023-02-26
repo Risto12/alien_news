@@ -12,6 +12,7 @@ enum class ConnectionStatus {
 
 // Just testing...
 object ConnectionStatusManager {
+
     private val _connectionStatus = MutableStateFlow(ConnectionStatus.DISCONNECT)
     val connectionStatus: StateFlow<ConnectionStatus> = _connectionStatus
 

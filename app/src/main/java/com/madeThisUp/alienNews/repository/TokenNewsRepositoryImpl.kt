@@ -3,12 +3,8 @@ package com.madeThisUp.alienNews.repository
 import android.util.Log
 import com.madeThisUp.alienNews.models.News
 import com.madeThisUp.alienNews.models.NewsChannel
-import com.madeThisUp.alienNews.newsApi.NETWORK_TAG
-import com.madeThisUp.alienNews.newsApi.NEWS_BASE_URL_TOKEN
-import com.madeThisUp.alienNews.newsApi.TokenNewsApi
-import kotlinx.coroutines.flow.collectLatest
+import com.madeThisUp.alienNews.newsApi.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import retrofit2.Retrofit
@@ -24,7 +20,10 @@ object TokenCache {
         field = "Bearer $token"
     }
 
-    fun isTokenSet(): Boolean = TOKEN != ""
+    fun resetToken() {
+        TOKEN = ""
+    }
+    fun noTokenSet(): Boolean = TOKEN != ""
 }
 
 class TokenNewsRepositoryImpl(
@@ -47,22 +46,34 @@ class TokenNewsRepositoryImpl(
         return try {
             request()
         } catch(e: HttpException) {
-            when(e.code()) {
-                401 -> throw NewsRepositoryAuthenticationException("Authentication not valid")
-                else -> throw NewsRepositoryException()
+            val exception = when(e.code()) {
+                401 -> run {
+                    TokenCache.resetToken()
+                    NewsRepositoryAuthenticationException("Authentication not valid")
+                }
+                else -> NewsRepositoryException()
             }
+            ConnectionStatusManager.setError()
+            throw exception
         } catch(e: NewsRepositoryAuthenticationException) {
+            ConnectionStatusManager.setError()
             throw e
         } catch(e: Exception) {
+                ConnectionStatusManager.setError()
                 throw NewsRepositoryException()
             }
         }
 
-    private suspend fun validateToken() {
-        val credentials = CredentialsPreferencesRepository.get().credentialsFlow.first()
-        if(!TokenCache.isTokenSet()) {
+    /**
+     * Checks that token has been acquired if username and password has been set
+     * If no username and password throws NewsRepositoryCredentialsNotSetException
+     * and sets status disconnected
+     */
+    private suspend fun acquireTokenIfNotSet() {
+        if(TokenCache.noTokenSet()) {
+            val credentials = CredentialsPreferencesRepository.get().credentialsFlow.first()
             if(credentials.username.isNullOrEmpty() || credentials.password.isNullOrEmpty()) {
-                throw NewsRepositoryAuthenticationException("Token not found")
+                throw NewsRepositoryCredentialsNotSetException()
             } else {
                 acquireToken(credentials.username, credentials.password)
             }
@@ -70,14 +81,14 @@ class TokenNewsRepositoryImpl(
     }
 
     override suspend fun fetchNewsChannels(): List<NewsChannel> {
-        validateToken()
+        acquireTokenIfNotSet()
         return withErrorHandling {
             newsApi.fetchChannels(token = getToken())
         }
     }
 
     override suspend fun fetchChannelNews(channel: String): List<News> {
-        validateToken()
+        acquireTokenIfNotSet()
         return withErrorHandling {
             newsApi.fetchChannel(token = getToken(), name = channel)
         }
@@ -90,6 +101,7 @@ class TokenNewsRepositoryImpl(
                 password.toRequestBody()
             ).token
             TokenCache.TOKEN = result
+            ConnectionStatusManager.setStatusConnected()
             Log.d(NETWORK_TAG, "Fetched token:${TokenCache.TOKEN}")
         }
     }

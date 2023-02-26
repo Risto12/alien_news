@@ -21,6 +21,11 @@ class CredentialsPreferencesRepository private constructor(private val dataStore
         }
     }
 
+    suspend fun clearCredentials() =
+        dataStore.updateData {
+            it.toBuilder().clear().build()
+        }
+
     companion object {
         private var INSTANCE: CredentialsPreferencesRepository? = null
 

@@ -3,21 +3,15 @@ package com.madeThisUp.alienNews.fragments
 import android.os.Bundle
 import android.view.*
 
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.madeThisUp.alienNews.R
 import com.madeThisUp.alienNews.adapters.NewsChannelListAdapter
 import com.madeThisUp.alienNews.databinding.FragmentNewsChannelBinding
 import com.madeThisUp.alienNews.viewModels.NewsChannelsViewModel
-import com.madeThisUp.alienNews.newsApi.ConnectionStatusManager
-import com.madeThisUp.alienNews.newsApi.ConnectionStatus
 import com.madeThisUp.alienNews.repository.TokenNewsRepositoryImpl
-import com.madeThisUp.alienNews.utility.showLongToastText
 import kotlinx.coroutines.launch
 
 
