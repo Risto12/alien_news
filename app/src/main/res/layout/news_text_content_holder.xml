@@ -4,27 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayoutCompat"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:background="@color/recyclerViewItem">
 
     <TextView
         android:id="@+id/newsHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textColor="@color/recyclerViewItemTextColor"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.000"
-        android:textSize="26sp"
-        tools:text="Aliens Attack"/>
+        tools:text="Aliens Attack" />
 
     <TextView
         android:id="@+id/newsDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:textColor="@color/recyclerViewItemUpdateDateColor"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newsHeader"
@@ -35,10 +39,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textColor="@color/recyclerViewItemTextColor"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newsDate"
-        android:textSize="18sp"
-        tools:text="Ipsum larem"/>
+        tools:text="Ipsum larem" />
 
     <ImageView
         android:id="@+id/newsMainImage"
@@ -57,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="@string/all_news_images"
-        android:textColor="#1D35D1"
+        android:textColor="#00CBFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newsText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,4 @@ object PhonePermissionHandler {
     fun hasReadContactsPermission(context: Context) = ContextCompat.checkSelfPermission(
         context,
         Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
-
-
 }
