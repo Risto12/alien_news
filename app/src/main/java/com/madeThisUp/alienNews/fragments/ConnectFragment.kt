@@ -1,8 +1,8 @@
 package com.madeThisUp.alienNews.fragments
 
+import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
@@ -15,10 +15,12 @@ import androidx.lifecycle.lifecycleScope
 import com.madeThisUp.alienNews.R
 import com.madeThisUp.alienNews.newsApi.NETWORK_ERROR_TAG
 import com.madeThisUp.alienNews.repository.*
+import com.madeThisUp.alienNews.utility.PhonePermissionHandler.hasReadContactsPermission
 import com.madeThisUp.alienNews.utility.QueryContacts
 import com.madeThisUp.alienNews.utility.showLongToastText
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
 
 /**
  * Purpose of this fragment is to show dialog that prompts user for username and password
@@ -32,6 +34,14 @@ class ConnectFragment : DialogFragment() {
     private var txtUsername: EditText? = null
     private var txtPassword: EditText? = null
     private var newsRepository = TokenNewsRepositoryImpl()
+
+    private val requestPermissionActivityResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if(granted) {
+            contactsActivityResult.launch(null)
+        } else {
+            requireContext().showLongToastText("Permission to read contacts denied")
+        }
+    }
 
     private val contactsActivityResult = registerForActivityResult(ActivityResultContracts.PickContact()) { uri ->
         uri?.let {
@@ -82,10 +92,10 @@ class ConnectFragment : DialogFragment() {
         }
     }
 
-    private fun systemHasFeature(intent: Intent): Boolean {
+    private fun systemHasFeature(): Boolean {
         val packageManager: PackageManager = requireActivity().packageManager
         val resolvedActivity: ResolveInfo? = packageManager.resolveActivity(
-            intent,
+            contactsActivityResult.contract.createIntent(requireContext(), null),
             PackageManager.MATCH_DEFAULT_ONLY, // restrict search to default category
         )
         return resolvedActivity != null
@@ -129,10 +139,12 @@ class ConnectFragment : DialogFragment() {
                 fetchToken()
             }
             getButton(Dialog.BUTTON_NEUTRAL).setOnClickListener {
-                val contactListFeat =
-                    contactsActivityResult.contract.createIntent(requireContext(), null)
-                if(systemHasFeature(contactListFeat)) {
-                    contactsActivityResult.launch(null)
+                if(systemHasFeature()) {
+                    if(hasReadContactsPermission(requireContext())) {
+                        contactsActivityResult.launch(null)
+                    } else {
+                        requestPermissionActivityResult.launch(Manifest.permission.READ_CONTACTS)
+                    }
                 } else {
                     requireContext().showLongToastText("Not available functionality")
                 }

@@ -7,7 +7,9 @@ import androidx.core.content.ContextCompat
 
 // Temporal
 object PhonePermissionHandler {
-    fun hasPermission(context: Context) = ContextCompat.checkSelfPermission(
+    fun hasReadContactsPermission(context: Context) = ContextCompat.checkSelfPermission(
         context,
         Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
+
+
 }
