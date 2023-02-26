@@ -1,6 +1,7 @@
 package com.madeThisUp.alienNews.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 
 import androidx.fragment.app.Fragment
@@ -10,18 +11,23 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.madeThisUp.alienNews.adapters.NewsChannelListAdapter
 import com.madeThisUp.alienNews.databinding.FragmentNewsChannelBinding
+import com.madeThisUp.alienNews.newsApi.NETWORK_ERROR_TAG
+import com.madeThisUp.alienNews.newsApi.NETWORK_TAG
+import com.madeThisUp.alienNews.repository.NewsRepositoryAuthenticationException
 import com.madeThisUp.alienNews.viewModels.NewsChannelsViewModel
 import com.madeThisUp.alienNews.repository.TokenNewsRepositoryImpl
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+const val CHECK_NEWS_INTERVAL_IN_MILLI_SECONDS = 1000L
 
 /**
  * Shows all the news channels available
  */
 class NewsChannelFragment : Fragment() {
-    private val newsChannelViewModel: NewsChannelsViewModel by viewModels {
-        NewsChannelsViewModel.Companion.NewsChannelsViewModelFactory(TokenNewsRepositoryImpl())
-    }
+    private val newsChannelViewModel: NewsChannelsViewModel by viewModels()
+    private val newsRepository: TokenNewsRepositoryImpl = TokenNewsRepositoryImpl()
+
     private var _binding: FragmentNewsChannelBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
@@ -63,5 +69,25 @@ class NewsChannelFragment : Fragment() {
                 }
             }
         }
+        // TODO CHECK that this stops when different view is inflated
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+                while (true) {
+                    try {
+                        newsRepository.fetchNewsChannels().let { newChannels ->
+                            newsChannelViewModel.updateChannels(newChannels)
+                        }
+                    } catch (e: Exception) {
+                        newsChannelViewModel.updateChannels(listOf())
+                        when(e) {
+                            is NewsRepositoryAuthenticationException -> Log.e(NETWORK_ERROR_TAG,"Exception during fetching channels", e)
+                            else -> Log.e(NETWORK_ERROR_TAG,"Exception during fetching channels", e)
+                        }
+                        Log.e(NETWORK_ERROR_TAG,"Exception during fetching channels", e)
+                    }
+                    delay(CHECK_NEWS_INTERVAL_IN_MILLI_SECONDS)
+                }
+        }}
     }
 }
+

@@ -1,6 +1,7 @@
 package com.madeThisUp.alienNews.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.madeThisUp.alienNews.R
@@ -16,8 +18,10 @@ import com.madeThisUp.alienNews.adapters.NewsListAdapter
 import com.madeThisUp.alienNews.databinding.FragmentNewsBinding
 import com.madeThisUp.alienNews.databinding.FragmentNewsImagesBinding
 import com.madeThisUp.alienNews.holders.NewsImageHolder
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+const val NEWS_IMAGES_FRAGMENT_TAG = "newsImagesFragment"
 /**
  * Shows all the pictures in the chosen news
  */
@@ -50,6 +54,11 @@ class NewsImagesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.imagesRecyclerView.adapter = NewsImagesAdapter(args.imageUrls.toList())
+        try {
+            binding.imagesRecyclerView.adapter = NewsImagesAdapter(args.imageUrls.toList())
+        } catch(e: Exception) {
+            Log.e(NEWS_IMAGES_FRAGMENT_TAG, "Exception during fetching images", e)
+            findNavController().navigateUp()
+        }
     }
 }

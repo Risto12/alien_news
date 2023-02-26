@@ -19,37 +19,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class NewsChannelsViewModel(
-    newsRepository: NewsRepository
-) : ViewModel() {
+class NewsChannelsViewModel: ViewModel() {
     private val _newsChannels: MutableStateFlow<List<NewsChannel>> = MutableStateFlow(listOf())
     val newsChannel: StateFlow<List<NewsChannel>>
         get() = _newsChannels.asStateFlow()
 
-    init {
-        viewModelScope.launch {
-                while (true) {
-                        try {
-                            newsRepository.fetchNewsChannels().let { newChannels ->
-                                _newsChannels.update { newChannels }
-                            }
-                        } catch(e: NewsRepositoryAuthenticationException) {
-                            Log.d(NETWORK_TAG, e.message.toString())
-                        } catch (e: Exception) {
-                            Log.e(NETWORK_ERROR_TAG,"Exception during fetching channels", e)
-                        }
-                    delay(6000) // TODO put smaller number
-                }
-            }
-        }
-
-    companion object {
-        class NewsChannelsViewModelFactory(
-            private val newsRepository: NewsRepository
-        ) : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return NewsChannelsViewModel(newsRepository = newsRepository) as T
-            }
-        }
-    }
+    fun updateChannels(newsChannels: List<NewsChannel>) =
+        _newsChannels.update { newsChannels }
 }

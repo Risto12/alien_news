@@ -23,7 +23,9 @@ object TokenCache {
     fun resetToken() {
         TOKEN = ""
     }
-    fun noTokenSet(): Boolean = TOKEN != ""
+
+    fun tokenSet(): Boolean = TOKEN != ""
+    fun noTokenSet(): Boolean = TOKEN == ""
 }
 
 class TokenNewsRepositoryImpl(
@@ -70,7 +72,7 @@ class TokenNewsRepositoryImpl(
      * and sets status disconnected
      */
     private suspend fun acquireTokenIfNotSet() {
-        if(TokenCache.noTokenSet()) {
+        if(TokenCache.noTokenSet()) { // TODO fix something went wrong ...
             val credentials = CredentialsPreferencesRepository.get().credentialsFlow.first()
             if(credentials.username.isNullOrEmpty() || credentials.password.isNullOrEmpty()) {
                 throw NewsRepositoryCredentialsNotSetException()

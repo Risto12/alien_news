@@ -14,9 +14,18 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.madeThisUp.alienNews.adapters.NewsListAdapter
 import com.madeThisUp.alienNews.databinding.FragmentNewsBinding
+import com.madeThisUp.alienNews.newsApi.ConnectionStatus
+import com.madeThisUp.alienNews.newsApi.ConnectionStatusManager
+import com.madeThisUp.alienNews.repository.TokenCache
 import com.madeThisUp.alienNews.repository.TokenNewsRepositoryImpl
+import com.madeThisUp.alienNews.utility.showLongToastText
 import com.madeThisUp.alienNews.viewModels.NewsViewModel
 import kotlinx.coroutines.launch
+
+
+fun ConnectionStatusManager.hasConnection(): Boolean =
+    (TokenCache.tokenSet() && connectionStatus.value == ConnectionStatus.CONNECTED)
+
 
 /**
  * Shows all the news of one channel
@@ -55,10 +64,15 @@ class NewsFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
                 newsViewModel.news.collect { news ->
                     binding.NewsRecyclerView.adapter = NewsListAdapter(news) {
-                        findNavController().navigate(
-                            NewsFragmentDirections.actionNewsFragmentToNewsImagesFragment(it.imageIds!!.toTypedArray())
-                        ) }
+                        if(ConnectionStatusManager.hasConnection()) {
+                            findNavController().navigate(
+                                NewsFragmentDirections.actionNewsFragmentToNewsImagesFragment(it.imageIds!!.toTypedArray())
+                            )
+                        } else {
+                            requireContext().showLongToastText("Connection issue. Check connection status")
+                        }
                     }
+                }
             }
     }}
 
