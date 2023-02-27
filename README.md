@@ -19,10 +19,10 @@ This should be run on the emulator because the ip of the development server is h
 This was a test project and I'm not actively developing this any more. Sometimes I might add some optimisation.
 
 
-![alt text](https://github.com/Risto12/AlienNews/channels.png "Alien channels")
+![alt text](https://github.com/Risto12/Alien_news/blob/main/channels.png "Alien channels")
 
-![alt text](https://github.com/Risto12/AlienNews/channel.png "Alien channel")
+![alt text](https://github.com/Risto12/Alien_news/blob/main/channel.png "Alien channel")
 
-![alt text](https://github.com/Risto12/AlienNews/images.png "Images")
+![alt text](https://github.com/Risto12/Alien_news/blob/main/images.png "Images")
 
-![alt text](https://github.com/Risto12/AlienNews/nocon.png "No connection to server")
+![alt text](https://github.com/Risto12/Alien_news/blob/main/nocon.png "No connection to server")
